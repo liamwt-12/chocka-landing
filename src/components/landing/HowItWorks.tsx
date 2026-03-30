@@ -3,45 +3,76 @@ export default function HowItWorks() {
     {
       num: '01',
       title: 'Connect your Google profile',
-      desc: 'Takes 2 minutes. We just need access to manage your listing.',
+      desc: 'One click, 30 seconds. We get read/write access to your Google Business Profile. Nothing else.',
     },
     {
       num: '02',
-      title: 'We optimise everything',
-      desc: 'Photos, description, categories, services — all professionally done.',
+      title: 'We score and fix it immediately',
+      desc: "You see your profile score and exactly what we'd change. Pay, and we fix it right then and there.",
     },
     {
       num: '03',
-      title: 'Weekly Google posts go live',
-      desc: 'Fresh content every week to keep your profile active and ranking.',
+      title: 'Weekly posts go live automatically',
+      desc: 'Written in your voice, about your trade, in your area. No hashtag spam. Just sounds like you.',
     },
     {
       num: '04',
-      title: 'Reviews get managed',
-      desc: 'We respond to every review within 24 hours. Professional and on-brand.',
+      title: 'Reviews get replied to',
+      desc: 'We draft replies and send them. You get a text to approve in one word. Done before the kettle boils.',
     },
     {
       num: '05',
-      title: 'You get more calls',
-      desc: 'More visibility means more calls, more jobs, more revenue.',
+      title: 'Monday stats land in your pocket',
+      desc: 'Views, calls, ranking. All by text. Glance at it in the van and smile.',
     },
   ];
 
   const timeline = [
-    { day: 'Mon', text: 'Profile optimised ✓' },
-    { day: 'Tue', text: 'New photos uploaded ✓' },
-    { day: 'Wed', text: 'Google Post published ✓' },
-    { day: 'Thu', text: '3 reviews responded to ✓' },
-    { day: 'Fri', text: 'Weekly report sent ✓' },
+    {
+      day: 'MON',
+      title: 'Stats in your pocket · 09:00',
+      desc: 'Views ↑12%, 8 calls, ranking #2. Read it in the van.',
+      emoji: '📊',
+    },
+    {
+      day: 'TUE',
+      title: 'Review reply sent',
+      desc: 'Sarah left 5 stars. We drafted a reply. You approved it in one tap.',
+      emoji: '⭐',
+    },
+    {
+      day: 'WED',
+      title: 'Post drafted for your trade',
+      desc: '"Boiler install in Jesmond..." — written in your voice, ready to go.',
+      emoji: '✏️',
+    },
+    {
+      day: 'FRI',
+      title: 'Post goes live on Google',
+      desc: 'Profile stays fresh. Algorithm stays happy. Phone keeps ringing.',
+      emoji: '🚀',
+    },
+    {
+      day: 'ALL',
+      title: 'Profile monitored daily',
+      desc: "Reviews, Q&A, ranking. We're watching so you don't have to.",
+      emoji: '👁',
+    },
   ];
 
   return (
     <section id="how-it-works" className="section-padding bg-warm">
       <div className="container-max">
-        <h2 className="font-heading font-extrabold text-4xl md:text-5xl text-black mb-16">
+        <div className="font-mono text-orange text-sm uppercase tracking-wider mb-4">
           How it works
+        </div>
+        <h2 className="font-heading font-extrabold text-4xl md:text-5xl text-black mb-16 leading-tight">
+          Two minutes to connect.
+          <br />
+          <span className="text-orange">Then we handle it.</span>
         </h2>
         <div className="grid md:grid-cols-2 gap-16 items-start">
+          {/* Steps */}
           <div className="space-y-8">
             {steps.map((step) => (
               <div key={step.num} className="flex gap-6">
@@ -57,25 +88,53 @@ export default function HowItWorks() {
               </div>
             ))}
           </div>
-          <div className="bg-black rounded-3xl p-6 text-white max-w-sm mx-auto">
-            <div className="text-center mb-4">
-              <div className="text-soft text-xs uppercase tracking-wider mb-1">
-                This week at Chocka
-              </div>
-              <div className="font-heading font-bold text-lg">Your activity</div>
-            </div>
-            <div className="space-y-3">
-              {timeline.map((item) => (
-                <div
-                  key={item.day}
-                  className="flex items-center gap-3 bg-white/5 rounded-xl px-4 py-3"
-                >
-                  <span className="font-mono text-orange text-sm font-bold w-10">
-                    {item.day}
-                  </span>
-                  <span className="text-white/80 text-sm">{item.text}</span>
+
+          {/* Right column — phone mockup + timeline */}
+          <div className="space-y-6">
+            {/* SMS Phone mockup */}
+            <div className="bg-black rounded-3xl p-5 text-white max-w-sm mx-auto">
+              <div className="text-center mb-3">
+                <div className="text-soft text-xs">Monday 09:00</div>
+                <div className="font-heading font-bold text-sm">
+                  Chocka
                 </div>
-              ))}
+              </div>
+              <div className="bg-white/10 rounded-2xl p-4 text-sm leading-relaxed">
+                <p className="mb-2">📊 <span className="font-bold">Your weekly stats</span></p>
+                <p>Profile views: 847 ↑ 12%</p>
+                <p>Calls: 8 ↑ 3</p>
+                <p>Local ranking: #2 ↑ 1</p>
+                <p>Star rating: 4.7★</p>
+                <p className="mt-2">2 reviews replied to this week ✓</p>
+                <p>Post going live on Friday 🚀</p>
+              </div>
+            </div>
+
+            {/* Week timeline */}
+            <div className="bg-black rounded-2xl overflow-hidden max-w-sm mx-auto">
+              <div className="px-5 py-3 border-b border-white/10">
+                <div className="font-heading font-bold text-white text-sm">
+                  Your week with Chocka
+                </div>
+              </div>
+              <div className="divide-y divide-white/5">
+                {timeline.map((item) => (
+                  <div key={item.day} className="px-5 py-3 flex gap-3">
+                    <div className="font-mono text-orange text-xs font-bold w-8 pt-0.5 shrink-0">
+                      {item.day}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-white text-sm font-medium">
+                        {item.title}
+                      </div>
+                      <div className="text-soft text-xs mt-0.5 leading-relaxed">
+                        {item.desc}
+                      </div>
+                    </div>
+                    <div className="text-base shrink-0">{item.emoji}</div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>

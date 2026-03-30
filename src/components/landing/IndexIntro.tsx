@@ -37,7 +37,7 @@ export default function IndexIntro() {
         </h2>
         <p className="text-mid text-lg md:text-xl max-w-2xl mx-auto mb-10">
           The Chocka Index ranks every tradesperson in the UK by town and trade.
-          Updated every week. Completely free.
+          Updated every week. Free.
         </p>
 
         <form
@@ -69,7 +69,7 @@ export default function IndexIntro() {
             ))}
           </select>
           <button type="submit" className="btn-primary py-3 px-8">
-            Search
+            Search →
           </button>
         </form>
 

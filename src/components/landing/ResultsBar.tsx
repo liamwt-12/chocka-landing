@@ -35,26 +35,44 @@ export default function ResultsBar() {
 
   const profileViews = useCountUp(1387, 2000, visible);
   const avgWork = useCountUp(2400, 2000, visible);
+  const avgRating = useCountUp(48, 2000, visible);
   const savedHours = useCountUp(65, 2000, visible);
-
-  const stats = [
-    { value: `${profileViews}%`, label: 'Profile view increase' },
-    { value: `£${avgWork.toLocaleString()}`, label: 'Avg new work generated' },
-    { value: '4.8★', label: 'Avg rating maintained' },
-    { value: `${(savedHours / 10).toFixed(1)}hrs`, label: 'Saved per month' },
-  ];
 
   return (
     <section ref={ref} className="bg-orange py-16">
       <div className="container-max grid grid-cols-2 md:grid-cols-4 gap-8 px-6 md:px-12 lg:px-20">
-        {stats.map((stat) => (
-          <div key={stat.label} className="text-center">
-            <div className="font-heading font-extrabold text-4xl md:text-5xl text-white mb-2">
-              {stat.value}
-            </div>
-            <div className="text-white/80 font-medium">{stat.label}</div>
+        <div className="text-center">
+          <div className="font-heading font-extrabold text-4xl md:text-5xl text-white mb-2">
+            {profileViews}%
           </div>
-        ))}
+          <div className="text-white/80 text-sm font-medium">
+            Average profile view increase in first 3 months
+          </div>
+        </div>
+        <div className="text-center">
+          <div className="font-heading font-extrabold text-4xl md:text-5xl text-white mb-2">
+            £{avgWork.toLocaleString()}
+          </div>
+          <div className="text-white/80 text-sm font-medium">
+            Average new work generated per month from Google
+          </div>
+        </div>
+        <div className="text-center">
+          <div className="font-heading font-extrabold text-4xl md:text-5xl text-white mb-2">
+            {(avgRating / 10).toFixed(1)}★
+          </div>
+          <div className="text-white/80 text-sm font-medium">
+            Average rating after 6 months. Up from 4.1
+          </div>
+        </div>
+        <div className="text-center">
+          <div className="font-heading font-extrabold text-4xl md:text-5xl text-white mb-2">
+            {(savedHours / 10).toFixed(1)}hrs
+          </div>
+          <div className="text-white/80 text-sm font-medium">
+            Average time saved per month per tradesperson
+          </div>
+        </div>
       </div>
     </section>
   );
