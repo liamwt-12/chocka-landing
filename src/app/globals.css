@@ -3,25 +3,85 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --black: #0F0F0F;
+  --orange: #E8501A;
+  --orange-dark: #C43E10;
+  --cream: #F5F1EB;
+  --warm: #FDFCFA;
+  --mid: #6B6560;
+  --soft: #B8B0A8;
+  --green: #2D7A4F;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center gap-2 bg-orange text-white font-heading font-bold text-lg px-8 py-4 rounded-xl hover:bg-orange-dark transition-colors duration-200;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center gap-2 border-2 border-orange text-orange font-heading font-bold text-lg px-8 py-4 rounded-xl hover:bg-orange hover:text-white transition-colors duration-200;
+  }
+
+  .section-padding {
+    @apply px-6 md:px-12 lg:px-20 py-20 md:py-28;
+  }
+
+  .container-max {
+    @apply max-w-7xl mx-auto;
+  }
+
+  .score-excellent {
+    @apply bg-emerald-100 text-emerald-800;
+  }
+
+  .score-good {
+    @apply bg-amber-100 text-amber-800;
+  }
+
+  .score-fair {
+    @apply bg-orange/10 text-orange;
+  }
+
+  .score-poor {
+    @apply bg-red-100 text-red-800;
+  }
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+@keyframes ticker {
+  0% {
+    transform: translateX(0);
   }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-ticker {
+  animation: ticker 30s linear infinite;
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.6s ease-out forwards;
 }
