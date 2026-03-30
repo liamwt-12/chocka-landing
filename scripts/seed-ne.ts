@@ -41,6 +41,29 @@ const TRADES = [
   'Damp Specialist', 'Drainage Engineer', 'Bricklayer', 'Kitchen Fitter',
 ];
 
+const TRADE_QUERIES: Record<string, string[]> = {
+  'Plumber': ['plumber', 'plumbing services', 'plumbing and heating'],
+  'Electrician': ['electrician', 'electrical services', 'electrical contractor'],
+  'Gas Engineer': ['gas engineer', 'gas safe engineer', 'boiler repair', 'heating engineer'],
+  'Roofer': ['roofer', 'roofing contractor', 'roofing services', 'roof repair'],
+  'Builder': ['builder', 'building contractor', 'construction'],
+  'Locksmith': ['locksmith', 'lock repair'],
+  'Carpenter': ['carpenter', 'joiner', 'carpentry'],
+  'Plasterer': ['plasterer', 'plastering services'],
+  'Painter and Decorator': ['painter decorator', 'painting and decorating'],
+  'Tiler': ['tiler', 'tiling services'],
+  'Landscaper': ['landscaper', 'landscape gardener', 'garden services'],
+  'Handyman': ['handyman', 'odd jobs', 'general maintenance'],
+  'Bathroom Fitter': ['bathroom fitter', 'bathroom installer', 'bathroom renovation'],
+  'Flooring Fitter': ['flooring fitter', 'flooring installer', 'floor fitting'],
+  'Solar Installer': ['solar installer', 'solar panels', 'solar panel installation'],
+  'HVAC Engineer': ['hvac', 'air conditioning', 'ventilation engineer'],
+  'Damp Specialist': ['damp specialist', 'damp proofing', 'damp treatment'],
+  'Drainage Engineer': ['drainage engineer', 'drain unblocking', 'drainage services'],
+  'Bricklayer': ['bricklayer', 'brickwork', 'bricklaying'],
+  'Kitchen Fitter': ['kitchen fitter', 'kitchen installer', 'kitchen renovation'],
+};
+
 const SEARCH_FIELD_MASK = [
   'places.id',
   'places.displayName',
@@ -178,38 +201,56 @@ async function getPlaceDetails(placeId: string): Promise<PlaceResult | null> {
 // --- Seeding logic ---
 
 async function seedTownTrade(town: string, trade: string) {
-  console.log(`  Searching: ${trade} in ${town}...`);
+  const queries = TRADE_QUERIES[trade] || [trade.toLowerCase()];
+  console.log(`  Searching: ${trade} in ${town} (${queries.length} queries)...`);
 
-  const searchRes = await fetch('https://places.googleapis.com/v1/places:searchText', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Goog-Api-Key': googleApiKey,
-      'X-Goog-FieldMask': 'places.id,places.displayName,places.formattedAddress,places.nationalPhoneNumber,places.websiteUri,places.rating,places.userRatingCount,places.regularOpeningHours,places.editorialSummary,places.photos,places.location,places.googleMapsUri',
-    },
-    body: JSON.stringify({
-      textQuery: `${trade} in ${town}, UK`,
-      maxResultCount: 20,
-    }),
-  });
+  // Run all query variations and deduplicate by place ID
+  const seenIds = new Set<string>();
+  const allResults: PlaceResult[] = [];
 
-  const searchText = await searchRes.text();
-  if (!searchRes.ok) {
-    console.log(`    Search API error (${searchRes.status}): ${searchText.slice(0, 300)}`);
-    return 0;
+  for (const query of queries) {
+    const searchRes = await fetch('https://places.googleapis.com/v1/places:searchText', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Goog-Api-Key': googleApiKey,
+        'X-Goog-FieldMask': 'places.id,places.displayName,places.formattedAddress,places.nationalPhoneNumber,places.websiteUri,places.rating,places.userRatingCount,places.regularOpeningHours,places.editorialSummary,places.photos,places.location,places.googleMapsUri',
+      },
+      body: JSON.stringify({
+        textQuery: `${query} in ${town}, UK`,
+        maxResultCount: 20,
+      }),
+    });
+
+    const searchText = await searchRes.text();
+    if (!searchRes.ok) {
+      console.log(`    Search API error for "${query}" (${searchRes.status}): ${searchText.slice(0, 200)}`);
+      continue;
+    }
+    const searchData = JSON.parse(searchText);
+    const places: PlaceResult[] = searchData.places || [];
+    let newCount = 0;
+    for (const p of places) {
+      if (!seenIds.has(p.id)) {
+        seenIds.add(p.id);
+        allResults.push(p);
+        newCount++;
+      }
+    }
+    console.log(`    "${query}": ${places.length} results, ${newCount} new`);
+
+    await sleep(100); // Rate limit between queries
   }
-  const searchData = JSON.parse(searchText);
-  console.log('    API response:', JSON.stringify(searchData).slice(0, 200));
-  const results: PlaceResult[] = searchData.places || [];
 
-  if (results.length === 0) {
+  if (allResults.length === 0) {
     console.log(`    No results for ${trade} in ${town}`);
     return 0;
   }
 
+  console.log(`    Total unique: ${allResults.length}`);
   let inserted = 0;
 
-  for (const searchResult of results) {
+  for (const searchResult of allResults) {
     try {
       await sleep(100); // Rate limit ~10 req/s
 
