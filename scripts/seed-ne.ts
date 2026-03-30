@@ -1,5 +1,5 @@
 /**
- * NE England Seeding Script
+ * NE England Seeding Script — Google Places API (New)
  *
  * Usage: npx tsx scripts/seed-ne.ts
  *
@@ -8,6 +8,10 @@
  *   SUPABASE_SERVICE_ROLE_KEY
  *   GOOGLE_PLACES_API_KEY
  */
+
+import { config } from 'dotenv';
+import { resolve } from 'path';
+config({ path: resolve(process.cwd(), '.env.local') });
 
 import { createClient } from '@supabase/supabase-js';
 
@@ -36,6 +40,37 @@ const TRADES = [
   'Flooring Fitter', 'Solar Installer', 'HVAC Engineer',
   'Damp Specialist', 'Drainage Engineer', 'Bricklayer', 'Kitchen Fitter',
 ];
+
+const SEARCH_FIELD_MASK = [
+  'places.id',
+  'places.displayName',
+  'places.formattedAddress',
+  'places.nationalPhoneNumber',
+  'places.websiteUri',
+  'places.rating',
+  'places.userRatingCount',
+  'places.regularOpeningHours',
+  'places.editorialSummary',
+  'places.photos',
+  'places.location',
+  'places.googleMapsUri',
+].join(',');
+
+const DETAILS_FIELD_MASK = [
+  'id',
+  'displayName',
+  'formattedAddress',
+  'nationalPhoneNumber',
+  'websiteUri',
+  'rating',
+  'userRatingCount',
+  'regularOpeningHours',
+  'editorialSummary',
+  'photos',
+  'location',
+  'googleMapsUri',
+  'reviews',
+].join(',');
 
 function slugify(text: string): string {
   return text
@@ -84,58 +119,129 @@ async function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+// --- Google Places API (New) helpers ---
+
+interface PlaceResult {
+  id: string;
+  displayName?: { text: string };
+  formattedAddress?: string;
+  nationalPhoneNumber?: string;
+  websiteUri?: string;
+  rating?: number;
+  userRatingCount?: number;
+  regularOpeningHours?: object;
+  editorialSummary?: { text: string };
+  photos?: object[];
+  location?: { latitude: number; longitude: number };
+  googleMapsUri?: string;
+  reviews?: { publishTime: string }[];
+}
+
+async function textSearch(query: string): Promise<PlaceResult[]> {
+  const res = await fetch('https://places.googleapis.com/v1/places:searchText', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Goog-Api-Key': googleApiKey,
+      'X-Goog-FieldMask': SEARCH_FIELD_MASK,
+    },
+    body: JSON.stringify({ textQuery: query, maxResultCount: 20 }),
+  });
+
+  if (!res.ok) {
+    const err = await res.text();
+    console.log(`    Search API error (${res.status}): ${err.slice(0, 200)}`);
+    return [];
+  }
+
+  const data = await res.json();
+  return data.places || [];
+}
+
+async function getPlaceDetails(placeId: string): Promise<PlaceResult | null> {
+  const res = await fetch(`https://places.googleapis.com/v1/places/${placeId}`, {
+    headers: {
+      'X-Goog-Api-Key': googleApiKey,
+      'X-Goog-FieldMask': DETAILS_FIELD_MASK,
+    },
+  });
+
+  if (!res.ok) {
+    const err = await res.text();
+    console.log(`    Details API error (${res.status}): ${err.slice(0, 200)}`);
+    return null;
+  }
+
+  return await res.json();
+}
+
+// --- Seeding logic ---
+
 async function seedTownTrade(town: string, trade: string) {
   console.log(`  Searching: ${trade} in ${town}...`);
 
-  // Text search
-  const query = encodeURIComponent(`${trade} in ${town}, UK`);
-  const searchUrl = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${query}&key=${googleApiKey}`;
-  const searchRes = await fetch(searchUrl);
-  const searchData = await searchRes.json();
+  const searchRes = await fetch('https://places.googleapis.com/v1/places:searchText', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Goog-Api-Key': googleApiKey,
+      'X-Goog-FieldMask': 'places.id,places.displayName,places.formattedAddress,places.nationalPhoneNumber,places.websiteUri,places.rating,places.userRatingCount,places.regularOpeningHours,places.editorialSummary,places.photos,places.location,places.googleMapsUri',
+    },
+    body: JSON.stringify({
+      textQuery: `${trade} in ${town}, UK`,
+      maxResultCount: 20,
+    }),
+  });
 
-  if (!searchData.results || searchData.results.length === 0) {
+  const searchText = await searchRes.text();
+  if (!searchRes.ok) {
+    console.log(`    Search API error (${searchRes.status}): ${searchText.slice(0, 300)}`);
+    return 0;
+  }
+  const searchData = JSON.parse(searchText);
+  console.log('    API response:', JSON.stringify(searchData).slice(0, 200));
+  const results: PlaceResult[] = searchData.places || [];
+
+  if (results.length === 0) {
     console.log(`    No results for ${trade} in ${town}`);
     return 0;
   }
 
-  const results = searchData.results.slice(0, 20);
   let inserted = 0;
 
-  for (const result of results) {
+  for (const searchResult of results) {
     try {
-      // Rate limit
-      await sleep(100);
+      await sleep(100); // Rate limit ~10 req/s
 
-      // Get place details
-      const detailsUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${result.place_id}&fields=name,formatted_address,formatted_phone_number,website,rating,user_ratings_total,opening_hours,editorial_summary,photos,reviews,url,geometry&key=${googleApiKey}`;
-      const detailsRes = await fetch(detailsUrl);
-      const detailsData = await detailsRes.json();
-      const place = detailsData.result;
-
+      // Fetch full details (includes reviews not returned in search)
+      const place = await getPlaceDetails(searchResult.id);
       if (!place) continue;
 
-      // Count recent reviews
+      const name = place.displayName?.text;
+      if (!name) continue;
+
+      // Count recent reviews (last 90 days)
       const ninetyDaysAgo = Date.now() - 90 * 24 * 60 * 60 * 1000;
       const recentReviews = (place.reviews || []).filter(
-        (r: { time: number }) => r.time * 1000 > ninetyDaysAgo
+        (r) => new Date(r.publishTime).getTime() > ninetyDaysAgo
       ).length;
 
       // Calculate score
       const scoreResult = calculateChockaScore({
         starRating: place.rating || 0,
-        reviewCount: place.user_ratings_total || 0,
+        reviewCount: place.userRatingCount || 0,
         recentReviews,
-        hasDescription: !!place.editorial_summary?.overview,
-        hasHours: !!place.opening_hours,
-        hasPhone: !!place.formatted_phone_number,
-        hasWebsite: !!place.website,
+        hasDescription: !!place.editorialSummary?.text,
+        hasHours: !!place.regularOpeningHours,
+        hasPhone: !!place.nationalPhoneNumber,
+        hasWebsite: !!place.websiteUri,
         photoCount: place.photos?.length || 0,
         responseRate: 0.5, // Not available from API
         lastPostDays: 365, // Not available from API
       });
 
       // Generate unique slug
-      const baseSlug = slugify(`${place.name}-${town}`);
+      const baseSlug = slugify(`${name}-${town}`);
       let slug = baseSlug;
       let suffix = 1;
       while (true) {
@@ -154,17 +260,17 @@ async function seedTownTrade(town: string, trade: string) {
         .from('businesses')
         .upsert(
           {
-            google_place_id: result.place_id,
-            name: place.name,
+            google_place_id: place.id,
+            name,
             slug,
             trade,
             town,
-            address: place.formatted_address || null,
-            phone: place.formatted_phone_number || null,
-            website: place.website || null,
-            google_maps_url: place.url || null,
-            lat: place.geometry?.location?.lat || null,
-            lng: place.geometry?.location?.lng || null,
+            address: place.formattedAddress || null,
+            phone: place.nationalPhoneNumber || null,
+            website: place.websiteUri || null,
+            google_maps_url: place.googleMapsUri || null,
+            lat: place.location?.latitude || null,
+            lng: place.location?.longitude || null,
             updated_at: new Date().toISOString(),
           },
           { onConflict: 'google_place_id' }
@@ -173,7 +279,7 @@ async function seedTownTrade(town: string, trade: string) {
         .single();
 
       if (bizError || !biz) {
-        console.log(`    Error inserting ${place.name}: ${bizError?.message}`);
+        console.log(`    Error inserting ${name}: ${bizError?.message}`);
         continue;
       }
 
@@ -184,7 +290,7 @@ async function seedTownTrade(town: string, trade: string) {
           score: scoreResult.score,
           band: scoreResult.band,
           star_rating: place.rating || null,
-          review_count: place.user_ratings_total || null,
+          review_count: place.userRatingCount || null,
           recency_score: scoreResult.components.recencyScore,
           completeness_score: scoreResult.components.completeness,
           response_rate_score: scoreResult.components.responseScore,
@@ -213,7 +319,6 @@ async function seedTownTrade(town: string, trade: string) {
 async function updateRankings() {
   console.log('\nUpdating rankings...');
 
-  // Get all scores with business info
   const { data: allScores } = await supabase
     .from('scores')
     .select('business_id, score, businesses(trade, town)')
@@ -221,7 +326,6 @@ async function updateRankings() {
 
   if (!allScores) return;
 
-  // Group by town+trade
   const grouped: Record<string, typeof allScores> = {};
   for (const s of allScores) {
     const biz = s.businesses as unknown as { trade: string; town: string };
@@ -252,13 +356,23 @@ async function updateRankings() {
 }
 
 async function main() {
-  console.log('=== Chocka Index: NE England Seeding ===\n');
+  // Check for --test flag: only run Newcastle + Plumber
+  const testMode = process.argv.includes('--test');
+
+  const towns = testMode ? ['Newcastle upon Tyne'] : NE_TOWNS;
+  const trades = testMode ? ['Plumber'] : TRADES;
+
+  if (testMode) {
+    console.log('=== TEST MODE: Newcastle + Plumber only ===\n');
+  } else {
+    console.log('=== Chocka Index: NE England Seeding ===\n');
+  }
 
   let totalInserted = 0;
 
-  for (const town of NE_TOWNS) {
+  for (const town of towns) {
     console.log(`\n📍 ${town}`);
-    for (const trade of TRADES) {
+    for (const trade of trades) {
       const count = await seedTownTrade(town, trade);
       totalInserted += count;
       console.log(`    ✓ ${trade}: ${count} businesses`);
