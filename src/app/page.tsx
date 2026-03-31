@@ -1,15 +1,18 @@
+import { Metadata } from 'next';
 import Nav from '@/components/landing/Nav';
 import Ticker from '@/components/landing/Ticker';
 import Hero from '@/components/landing/Hero';
-import IndexIntro from '@/components/landing/IndexIntro';
-import Pain from '@/components/landing/Pain';
-import ResultsBar from '@/components/landing/ResultsBar';
-import HowItWorks from '@/components/landing/HowItWorks';
-import Compare from '@/components/landing/Compare';
-import Testimonials from '@/components/landing/Testimonials';
-import Pricing from '@/components/landing/Pricing';
-import FinalCTA from '@/components/landing/FinalCTA';
+import LeagueTablePreview from '@/components/landing/LeagueTablePreview';
+import ScoringExplainer from '@/components/landing/ScoringExplainer';
+import BrowseByTrade from '@/components/landing/BrowseByTrade';
+import BrowseByTown from '@/components/landing/BrowseByTown';
 import Footer from '@/components/landing/Footer';
+
+export const metadata: Metadata = {
+  title: 'Chocka Index — UK Tradesperson Rankings',
+  description:
+    'Find the best tradesperson near you. Every tradesperson scored out of 100 based on real Google data. No business can pay to rank higher. Updated weekly.',
+};
 
 export default function Home() {
   return (
@@ -17,14 +20,10 @@ export default function Home() {
       <Nav />
       <Ticker />
       <Hero />
-      <IndexIntro />
-      <Pain />
-      <ResultsBar />
-      <HowItWorks />
-      <Compare />
-      <Testimonials />
-      <Pricing />
-      <FinalCTA />
+      <LeagueTablePreview />
+      <ScoringExplainer />
+      <BrowseByTrade />
+      <BrowseByTown />
       <Footer />
     </>
   );

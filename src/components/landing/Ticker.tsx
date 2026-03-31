@@ -1,15 +1,15 @@
 export default function Ticker() {
   const items = [
-    'Chocka just posted for a plumber in Newcastle',
-    'New 5★ review replied to · Sunderland',
-    'Profile views up 34% this month · Gateshead',
-    'Ranking improved to #2 · Durham',
-    '3 new reviews this week · Middlesbrough',
-    'Weekly stats sent · Newcastle',
-    'Profile score improved +12 · Leeds',
-    'Review reply sent · Manchester',
-    'Google Post published · Darlington',
-    'Profile optimised · South Shields',
+    '7,101 businesses ranked across NE England',
+    'Rankings updated every week',
+    'Based on real Google data · No pay-to-rank',
+    '15 towns · 20 trades covered',
+    'Scores from 0–100 · Stars, reviews, recency & more',
+    'New businesses added every week',
+    'Plumbers · Electricians · Roofers · Builders & more',
+    'Newcastle · Sunderland · Durham · Gateshead & more',
+    'Free to search · No account needed',
+    'Transparent scoring · No algorithm black box',
   ];
 
   return (

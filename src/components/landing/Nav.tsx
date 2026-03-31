@@ -15,27 +15,46 @@ export default function Nav() {
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? 'bg-warm/90 backdrop-blur-md shadow-sm' : 'bg-transparent'
+        scrolled
+          ? 'bg-warm/95 backdrop-blur-md border-b border-soft/20'
+          : 'bg-transparent'
       }`}
     >
       <div className="container-max flex items-center justify-between px-6 md:px-12 lg:px-20 py-4">
-        <Link href="/" className="font-mono text-2xl font-bold text-orange tracking-tight">
-          CHOCKA
+        <Link href="/" className="flex items-center gap-2">
+          <span className="font-heading font-extrabold text-2xl text-orange tracking-tight">
+            CHOCKA
+          </span>
+          <span className="text-soft text-xs font-mono uppercase tracking-wider">
+            INDEX
+          </span>
         </Link>
         <div className="hidden md:flex items-center gap-8">
-          <a href="#how-it-works" className="text-mid hover:text-black transition-colors font-medium">
-            How it works
-          </a>
-          <a href="#pricing" className="text-mid hover:text-black transition-colors font-medium">
-            Pricing
+          <a
+            href="#scoring"
+            className="text-mid hover:text-black transition-colors font-medium text-sm"
+          >
+            How scoring works
           </a>
           <a
-            href="https://app.chocka.co.uk"
-            className="btn-primary text-base py-3 px-6"
+            href="#trades"
+            className="text-mid hover:text-black transition-colors font-medium text-sm"
           >
-            Get Started →
+            Browse trades
           </a>
+          <Link
+            href="/for-tradespeople"
+            className="btn-secondary text-sm py-2.5 px-5"
+          >
+            Are you a tradesperson?
+          </Link>
         </div>
+        <Link
+          href="/for-tradespeople"
+          className="md:hidden btn-secondary text-sm py-2 px-4"
+        >
+          For tradespeople
+        </Link>
       </div>
     </nav>
   );

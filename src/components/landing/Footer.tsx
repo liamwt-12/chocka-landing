@@ -4,36 +4,66 @@ export default function Footer() {
   return (
     <footer className="bg-black text-white py-16">
       <div className="container-max px-6 md:px-12 lg:px-20">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+        {/* Main footer content */}
+        <div className="grid md:grid-cols-3 gap-12 items-start">
+          {/* Left: Wordmark */}
           <div>
-            <Link href="/" className="font-mono text-2xl font-bold text-orange tracking-tight">
-              CHOCKA
+            <Link href="/" className="flex items-center gap-2">
+              <span className="font-heading font-extrabold text-2xl text-orange">
+                CHOCKA
+              </span>
+              <span className="text-soft text-xs font-mono uppercase tracking-wider">
+                INDEX
+              </span>
             </Link>
-            <p className="text-soft text-sm mt-2">
-              Get more jobs from Google. Automatically.
-            </p>
           </div>
-          <div className="flex flex-wrap gap-8 text-sm">
-            <Link href="/privacy" className="text-soft hover:text-white transition-colors">
-              Privacy
-            </Link>
-            <Link href="/terms" className="text-soft hover:text-white transition-colors">
-              Terms
-            </Link>
-            <a href="mailto:hello@chocka.co.uk" className="text-soft hover:text-white transition-colors">
-              Contact
-            </a>
-            <Link href="/index" className="text-soft hover:text-white transition-colors">
-              Chocka Index
+
+          {/* Centre: Stats */}
+          <div className="text-soft text-sm leading-relaxed text-center">
+            Updated weekly · Based on public Google data · 7,101 businesses
+            ranked
+          </div>
+
+          {/* Right: Tradespeople link */}
+          <div className="md:text-right">
+            <Link
+              href="/for-tradespeople"
+              className="text-orange font-heading font-bold hover:underline"
+            >
+              Are you a tradesperson? →
             </Link>
           </div>
         </div>
-        <div className="mt-12 pt-8 border-t border-white/10 text-soft text-sm text-center">
-          A{' '}
-          <a href="https://usefulforhumans.com" className="text-orange hover:underline">
-            Useful for Humans
-          </a>{' '}
-          product. © {new Date().getFullYear()} Chocka. All rights reserved.
+
+        {/* Bottom */}
+        <div className="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4 text-soft text-sm">
+          <div className="flex flex-wrap gap-6">
+            <Link
+              href="/privacy"
+              className="hover:text-white transition-colors"
+            >
+              Privacy
+            </Link>
+            <Link href="/terms" className="hover:text-white transition-colors">
+              Terms
+            </Link>
+            <a
+              href="mailto:hello@chocka.co.uk"
+              className="hover:text-white transition-colors"
+            >
+              Contact
+            </a>
+          </div>
+          <div>
+            A{' '}
+            <a
+              href="https://usefulforhumans.com"
+              className="text-orange hover:underline"
+            >
+              Useful for Humans
+            </a>{' '}
+            product
+          </div>
         </div>
       </div>
     </footer>
