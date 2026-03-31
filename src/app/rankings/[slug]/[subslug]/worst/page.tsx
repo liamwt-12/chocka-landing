@@ -12,7 +12,6 @@ import {
 import { getLeagueTable } from '@/lib/data';
 import ScorePill from '@/components/shared/ScorePill';
 import MovementIndicator from '@/components/shared/MovementIndicator';
-import LastActiveIndicator from '@/components/shared/LastActiveIndicator';
 
 export const revalidate = 604800;
 
@@ -107,9 +106,6 @@ export default async function WorstPage({ params }: Props) {
                       <th className="px-4 py-3 text-xs text-mid font-medium uppercase tracking-wider hidden md:table-cell">
                         Reviews
                       </th>
-                      <th className="px-4 py-3 text-xs text-mid font-medium uppercase tracking-wider hidden md:table-cell">
-                        Active
-                      </th>
                       <th className="px-4 py-3 text-xs text-mid font-medium uppercase tracking-wider text-center">
                         Move
                       </th>
@@ -157,11 +153,6 @@ export default async function WorstPage({ params }: Props) {
                           <span className="text-mid">
                             {entry.score.review_count ?? '—'}
                           </span>
-                        </td>
-                        <td className="px-4 py-4 hidden md:table-cell">
-                          <LastActiveIndicator
-                            lastActiveAt={entry.score.last_active_at}
-                          />
                         </td>
                         <td className="px-4 py-4 text-center">
                           <MovementIndicator movement={entry.movement} />

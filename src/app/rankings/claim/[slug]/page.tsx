@@ -1,13 +1,26 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { supabase } from '@/lib/supabase';
 
 export default function ClaimPage({ params }: { params: { slug: string } }) {
+  const [businessName, setBusinessName] = useState('');
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    supabase
+      .from('businesses')
+      .select('name')
+      .eq('slug', params.slug)
+      .single()
+      .then(({ data }) => {
+        if (data) setBusinessName(data.name);
+      });
+  }, [params.slug]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,14 +47,22 @@ export default function ClaimPage({ params }: { params: { slug: string } }) {
     <main>
       <section className="bg-black text-white section-padding pt-16 pb-12">
         <div className="container-max">
-          <Link href="/index" className="font-mono text-orange text-sm mb-4 inline-block">
+          <Link
+            href="/index"
+            className="font-mono text-orange text-sm mb-4 inline-block"
+          >
             ← Back to Index
           </Link>
           <h1 className="font-heading font-extrabold text-4xl md:text-5xl mb-2">
-            Claim your <span className="text-orange">profile</span>
+            Claim{' '}
+            <span className="text-orange">
+              {businessName || 'your profile'}
+            </span>
           </h1>
           <p className="text-soft text-lg">
-            Enter your email to get started. It&apos;s free.
+            {businessName
+              ? `Verify you own ${businessName} to manage your profile.`
+              : "Enter your email to get started. It's free."}
           </p>
         </div>
       </section>
@@ -55,10 +76,13 @@ export default function ClaimPage({ params }: { params: { slug: string } }) {
                 Claim submitted!
               </h2>
               <p className="text-mid mb-6">
-                We&apos;ll send you an email to verify your ownership. Once verified,
-                you can manage your profile.
+                We&apos;ll send you an email to verify your ownership. Once
+                verified, you can manage your profile.
               </p>
-              <Link href={`/index/profile/${params.slug}`} className="text-orange font-heading font-bold hover:underline">
+              <Link
+                href={`/index/profile/${params.slug}`}
+                className="text-orange font-heading font-bold hover:underline"
+              >
                 ← Back to profile
               </Link>
             </div>
@@ -69,16 +93,22 @@ export default function ClaimPage({ params }: { params: { slug: string } }) {
                   Step 1 of 2
                 </div>
                 <h2 className="font-heading font-bold text-2xl text-black">
-                  Enter your email
+                  {businessName
+                    ? `Claim ${businessName}`
+                    : 'Enter your email'}
                 </h2>
                 <p className="text-mid mt-2">
-                  We&apos;ll verify you own this business before giving you access.
+                  We&apos;ll verify you own this business before giving you
+                  access.
                 </p>
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-mid mb-1">
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium text-mid mb-1"
+                  >
                     Email address
                   </label>
                   <input
@@ -92,16 +122,14 @@ export default function ClaimPage({ params }: { params: { slug: string } }) {
                   />
                 </div>
 
-                {error && (
-                  <p className="text-red-600 text-sm">{error}</p>
-                )}
+                {error && <p className="text-red-600 text-sm">{error}</p>}
 
                 <button
                   type="submit"
                   disabled={loading}
                   className="btn-primary w-full justify-center"
                 >
-                  {loading ? 'Submitting...' : 'Continue →'}
+                  {loading ? 'Submitting...' : 'Claim This Profile →'}
                 </button>
               </form>
 
