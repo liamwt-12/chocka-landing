@@ -28,6 +28,7 @@ export const metadata: Metadata = {
   description:
     "Chocka manages your Google Business Profile so you get more calls, more jobs, and more revenue. £29/month. 2 minute setup.",
   metadataBase: new URL("https://chocka.co.uk"),
+  icons: { icon: '/favicon.svg' },
 };
 
 export default function RootLayout({

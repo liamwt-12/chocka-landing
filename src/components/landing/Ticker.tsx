@@ -13,7 +13,7 @@ export default function Ticker() {
   ];
 
   return (
-    <div className="bg-orange text-white overflow-hidden py-2.5">
+    <div className="relative z-40 mt-[60px] bg-orange text-white overflow-hidden py-2.5">
       <div className="animate-ticker flex whitespace-nowrap">
         {[...items, ...items].map((item, i) => (
           <span key={i} className="mx-8 text-sm font-medium font-body">

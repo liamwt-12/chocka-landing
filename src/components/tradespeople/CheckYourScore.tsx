@@ -69,12 +69,29 @@ export default function CheckYourScore() {
     setResult(null);
     setNotFound(false);
 
-    const { data: businesses } = await supabase
+    const trimmedName = businessName.trim();
+
+    // Try full name partial match first
+    let { data: businesses } = await supabase
       .from('businesses')
       .select('id, name, trade, town')
       .eq('town', selectedTown)
-      .ilike('name', `%${businessName.trim()}%`)
+      .ilike('name', `%${trimmedName}%`)
       .limit(1);
+
+    // Fallback: try matching just the first word of the business name
+    if (!businesses?.length) {
+      const firstWord = trimmedName.split(/\s+/)[0];
+      if (firstWord && firstWord.length >= 2) {
+        const fallback = await supabase
+          .from('businesses')
+          .select('id, name, trade, town')
+          .eq('town', selectedTown)
+          .ilike('name', `%${firstWord}%`)
+          .limit(1);
+        businesses = fallback.data;
+      }
+    }
 
     if (!businesses?.length) {
       setNotFound(true);

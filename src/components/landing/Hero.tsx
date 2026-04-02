@@ -59,7 +59,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="section-padding pt-[120px] md:pt-[160px] pb-16 md:pb-20">
+    <section className="section-padding pt-8 md:pt-12 pb-16 md:pb-20">
       <div className="container-max text-center">
         {/* Eyebrow */}
         <div className="inline-flex items-center gap-2 bg-orange/10 text-orange text-sm font-medium px-4 py-1.5 rounded-full mb-8">

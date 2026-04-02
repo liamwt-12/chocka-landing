@@ -13,12 +13,12 @@ export default function BrowseByTown() {
           <p className="text-mid text-lg mb-12">
             15 towns across NE England.
           </p>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+          <div className="flex overflow-x-auto gap-3 pb-2 md:grid md:grid-cols-4 lg:grid-cols-5 md:overflow-visible md:pb-0">
             {NE_TOWNS.map((town) => (
               <Link
                 key={town}
                 href={`/index/${townSlug(town)}`}
-                className="bg-white rounded-xl px-5 py-4 font-heading font-bold text-sm text-black border border-soft/15 hover:border-orange/30 hover:shadow-md hover:text-orange transition-all"
+                className="flex-shrink-0 w-[180px] md:w-auto bg-white rounded-xl px-5 py-4 font-heading font-bold text-sm text-black border border-soft/15 hover:border-orange/30 hover:shadow-md hover:text-orange transition-all"
               >
                 {town}
               </Link>

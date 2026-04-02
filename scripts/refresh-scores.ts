@@ -22,6 +22,8 @@ if (!supabaseUrl || !supabaseKey || !googleApiKey) {
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 
+const MAX_BUSINESSES = 500;
+
 function calculateChockaScore(data: {
   starRating: number;
   reviewCount: number;
@@ -142,6 +144,11 @@ async function main() {
       updated++;
       if (updated % 50 === 0) {
         console.log(`  Progress: ${updated}/${businesses.length}`);
+      }
+
+      if (updated >= MAX_BUSINESSES) {
+        console.log(`\nRate limit reached — run again tomorrow to continue`);
+        break;
       }
     } catch (err) {
       console.log(`  ✗ ${biz.name}: ${err}`);

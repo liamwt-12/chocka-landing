@@ -80,6 +80,20 @@ export default async function LeagueTablePage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
+      <nav className="bg-black border-b border-white/10">
+        <div className="container-max flex items-center justify-between px-6 md:px-12 lg:px-20 py-4">
+          <Link href="/" className="font-heading font-extrabold text-2xl text-orange tracking-tight">
+            CHOCKA
+          </Link>
+          <Link
+            href="/for-tradespeople"
+            className="text-soft hover:text-orange text-sm font-medium transition-colors"
+          >
+            For tradespeople →
+          </Link>
+        </div>
+      </nav>
+
       <section className="bg-black text-white section-padding pt-16 pb-12">
         <div className="container-max">
           <div className="flex items-center gap-2 text-sm text-soft mb-4">
