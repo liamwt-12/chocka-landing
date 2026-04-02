@@ -163,9 +163,9 @@ export default function CheckYourScore() {
           name: data.name,
           score: data.score,
           band: data.band,
-          rank: 0,
-          total_in_trade: 0,
-          trade: '',
+          rank: data.rank ?? 0,
+          total_in_trade: data.totalInTrade ?? 0,
+          trade: data.trade ?? '',
           town: selectedTown,
           isLive: true,
           breakdown: {
@@ -253,12 +253,14 @@ export default function CheckYourScore() {
 
               {result.isLive && (
                 <p className="text-amber-400/70 text-sm mb-6 border border-amber-400/20 rounded-lg px-4 py-3 bg-amber-400/5">
-                  Live score — calculated now from your Google profile. Not yet
-                  in the weekly Index.
+                  Live score — calculated now from your Google profile.{' '}
+                  {result.rank > 0
+                    ? 'Added to the Chocka Index.'
+                    : 'Not yet in the weekly Index.'}
                 </p>
               )}
 
-              <div className={`grid ${result.isLive ? 'sm:grid-cols-2' : 'sm:grid-cols-3'} gap-6 mb-6`}>
+              <div className={`grid ${result.rank > 0 ? 'sm:grid-cols-3' : 'sm:grid-cols-2'} gap-6 mb-6`}>
                 <div>
                   <div className="text-white/40 text-xs font-mono uppercase mb-1">
                     Chocka Score
@@ -283,7 +285,7 @@ export default function CheckYourScore() {
                     {BAND_LABELS[result.band]}
                   </div>
                 </div>
-                {!result.isLive && (
+                {result.rank > 0 && (
                   <div>
                     <div className="text-white/40 text-xs font-mono uppercase mb-1">
                       Rank
