@@ -8,3 +8,10 @@
 [build.environment]
   NODE_VERSION = "20"
   SECRETS_SCAN_OMIT_PATHS = ".env.example"
+
+[[plugins]]
+  package = "@netlify/plugin-cron"
+
+[[crons]]
+  schedule = "0 7 * * 1"
+  path = "/api/cron/weekly-ranking"
