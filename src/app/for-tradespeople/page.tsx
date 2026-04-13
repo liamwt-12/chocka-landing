@@ -1,7 +1,8 @@
 import { Metadata } from 'next';
 import TradesNav from '@/components/tradespeople/TradesNav';
 import TradesHero from '@/components/tradespeople/TradesHero';
-import CheckYourScore from '@/components/tradespeople/CheckYourScore';
+import HowItWorks from '@/components/tradespeople/HowItWorks';
+import ScoreGap from '@/components/tradespeople/ScoreGap';
 import TheGap from '@/components/tradespeople/TheGap';
 import WeekTimeline from '@/components/tradespeople/WeekTimeline';
 import SMSMockup from '@/components/tradespeople/SMSMockup';
@@ -12,7 +13,7 @@ import TradesFinalCTA from '@/components/tradespeople/TradesFinalCTA';
 export const metadata: Metadata = {
   title: 'Chocka for Tradespeople — Get More Jobs From Google',
   description:
-    'We run your Google Business Profile on autopilot. Weekly posts, review replies, Monday stats by text. £29/month. 2 minute setup.',
+    'We fix your Google Business Profile then run it on autopilot. Weekly posts, review replies, Monday stats by text. £29/month. Connect in 30 seconds.',
 };
 
 export default function ForTradespeople() {
@@ -20,7 +21,8 @@ export default function ForTradespeople() {
     <div className="bg-black text-white min-h-screen">
       <TradesNav />
       <TradesHero />
-      <CheckYourScore />
+      <HowItWorks />
+      <ScoreGap />
       <TheGap />
       <WeekTimeline />
       <SMSMockup />

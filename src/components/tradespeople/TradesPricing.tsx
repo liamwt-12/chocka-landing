@@ -48,7 +48,7 @@ export default function TradesPricing() {
               href="https://app.chocka.co.uk/login"
               className="btn-primary w-full justify-center text-xl"
             >
-              Get Started · £29/month →
+              See what we&apos;d fix &mdash; free →
             </a>
             <p className="text-white/30 text-xs text-center mt-4">
               Set up in 2 minutes · Cancel anytime · No contract

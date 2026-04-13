@@ -61,25 +61,22 @@ export default function TradesHero() {
             For UK Tradespeople
           </div>
           <h1 className="font-heading font-extrabold uppercase text-5xl md:text-6xl lg:text-7xl text-white leading-[0.9] mb-8">
-            Find out where you
+            We fix your Google
             <br />
-            <span className="text-orange">actually rank.</span>
+            profile. Then we
+            <br />
+            <span className="text-orange">run it for you.</span>
           </h1>
           <p className="text-white/50 text-lg md:text-xl mb-8 max-w-lg leading-relaxed">
-            Type your business name. See your Chocka Score. Free, takes 30
-            seconds.
+            Connect your Google Business Profile and see your real score in 60
+            seconds. We&apos;ll show you exactly what&apos;s holding you back
+            &mdash; then fix it.
           </p>
           <a
-            href="#check-score"
-            onClick={(e) => {
-              e.preventDefault();
-              document
-                .getElementById('check-score')
-                ?.scrollIntoView({ behavior: 'smooth' });
-            }}
+            href="https://app.chocka.co.uk/login"
             className="btn-primary text-xl mb-3 inline-flex"
           >
-            Get my free score →
+            See what we&apos;d fix &mdash; free →
           </a>
         </div>
 

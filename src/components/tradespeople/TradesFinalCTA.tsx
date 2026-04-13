@@ -16,7 +16,7 @@ export default function TradesFinalCTA() {
           href="https://app.chocka.co.uk/login"
           className="inline-flex items-center gap-2 bg-white text-orange font-heading font-bold text-xl px-10 py-5 rounded-xl hover:bg-cream transition-colors duration-200"
         >
-          Connect Your Google Profile →
+          See what we&apos;d fix &mdash; free →
         </a>
         <p className="text-white/60 text-sm mt-4">£29/month · Cancel anytime</p>
       </div>
