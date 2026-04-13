@@ -37,10 +37,16 @@ export default function TradesNav() {
             ← Back to Index
           </Link>
           <a
-            href="https://app.chocka.co.uk/login"
+            href="#check-score"
+            onClick={(e) => {
+              e.preventDefault();
+              document
+                .getElementById('check-score')
+                ?.scrollIntoView({ behavior: 'smooth' });
+            }}
             className="btn-primary text-sm py-2.5 px-5"
           >
-            Connect Google Profile →
+            Get my free score →
           </a>
         </div>
       </div>

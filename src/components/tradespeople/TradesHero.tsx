@@ -61,37 +61,26 @@ export default function TradesHero() {
             For UK Tradespeople
           </div>
           <h1 className="font-heading font-extrabold uppercase text-5xl md:text-6xl lg:text-7xl text-white leading-[0.9] mb-8">
-            Your competitors
+            Find out where you
             <br />
-            are being managed.
-            <br />
-            <span className="text-orange">You&apos;re not.</span>
+            <span className="text-orange">actually rank.</span>
           </h1>
           <p className="text-white/50 text-lg md:text-xl mb-8 max-w-lg leading-relaxed">
-            We run your Google Business Profile on autopilot. Weekly posts,
-            review replies, Monday stats by text. Your Chocka Score goes up. Your
-            phone rings more.
+            Type your business name. See your Chocka Score. Free, takes 30
+            seconds.
           </p>
           <a
-            href="https://app.chocka.co.uk/login"
+            href="#check-score"
+            onClick={(e) => {
+              e.preventDefault();
+              document
+                .getElementById('check-score')
+                ?.scrollIntoView({ behavior: 'smooth' });
+            }}
             className="btn-primary text-xl mb-3 inline-flex"
           >
-            Connect Your Google Profile →
+            Get my free score →
           </a>
-          <p className="text-white/30 text-sm mb-8">
-            2 minute setup · Cancel anytime · £29/month
-          </p>
-          <div className="flex items-center gap-6 text-sm font-mono">
-            <span className="text-white">
-              £29<span className="text-white/30">/month</span>
-            </span>
-            <span className="text-white/20">|</span>
-            <span className="text-white">
-              £229<span className="text-white/30">/year</span>
-            </span>
-            <span className="text-white/20">|</span>
-            <span className="text-white/40">Cancel anytime</span>
-          </div>
         </div>
 
         {/* Right column — Score animation card */}
