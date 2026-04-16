@@ -15,25 +15,62 @@ const FIELD_MASK = [
   'places.photos',
 ].join(',');
 
-export async function POST(req: NextRequest) {
-  const { businessName, town, trade } = await req.json();
+async function geocodePostcode(
+  postcode: string
+): Promise<{ lat: number; lng: number } | null> {
+  try {
+    const res = await fetch(
+      `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(postcode)},+UK&key=${API_KEY}`
+    );
+    const data = await res.json();
+    const location = data.results?.[0]?.geometry?.location;
+    if (location) return { lat: location.lat, lng: location.lng };
+  } catch {
+    // Fall through to null
+  }
+  return null;
+}
 
-  if (!businessName || !town || !trade) {
-    return NextResponse.json({ candidates: [], error: 'Missing fields' }, { status: 400 });
+export async function POST(req: NextRequest) {
+  const { businessName, postcode } = await req.json();
+
+  if (!businessName || !postcode) {
+    return NextResponse.json(
+      { candidates: [], error: 'Missing fields' },
+      { status: 400 }
+    );
   }
 
-  const res = await fetch('https://places.googleapis.com/v1/places:searchText', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Goog-Api-Key': API_KEY,
-      'X-Goog-FieldMask': FIELD_MASK,
-    },
-    body: JSON.stringify({
-      textQuery: `${businessName} ${trade} in ${town}, UK`,
-      maxResultCount: 5,
-    }),
-  });
+  const coords = await geocodePostcode(postcode);
+
+  const body: Record<string, unknown> = {
+    textQuery: coords
+      ? businessName
+      : `${businessName} ${postcode}, UK`,
+    maxResultCount: 5,
+  };
+
+  if (coords) {
+    body.locationBias = {
+      circle: {
+        center: { latitude: coords.lat, longitude: coords.lng },
+        radiusMeters: 5000,
+      },
+    };
+  }
+
+  const res = await fetch(
+    'https://places.googleapis.com/v1/places:searchText',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Goog-Api-Key': API_KEY,
+        'X-Goog-FieldMask': FIELD_MASK,
+      },
+      body: JSON.stringify(body),
+    }
+  );
 
   const data = await res.json();
   const places = data.places ?? [];
