@@ -10,8 +10,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   entries.push(
     { url: baseUrl, lastModified, changeFrequency: 'weekly', priority: 1 },
     { url: `${baseUrl}/index`, lastModified, changeFrequency: 'weekly', priority: 0.9 },
-    { url: `${baseUrl}/for-tradespeople`, lastModified, changeFrequency: 'monthly', priority: 0.8 },
-    { url: `${baseUrl}/score`, lastModified, changeFrequency: 'monthly', priority: 0.9 }
+    { url: `${baseUrl}/for-tradespeople`, lastModified, changeFrequency: 'monthly', priority: 0.8 }
   );
 
   // Town hub pages
