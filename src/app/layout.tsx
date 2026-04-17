@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Barlow_Condensed, DM_Sans, DM_Mono, Archivo_Black, Inter, Caveat } from "next/font/google";
+import { Barlow_Condensed, DM_Sans, DM_Mono } from "next/font/google";
 import "./globals.css";
 
 const barlow = Barlow_Condensed({
@@ -23,27 +23,6 @@ const dmMono = DM_Mono({
   display: "swap",
 });
 
-const archivoBlack = Archivo_Black({
-  subsets: ["latin"],
-  weight: ["400"],
-  variable: "--font-archivo-black",
-  display: "swap",
-});
-
-const inter = Inter({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-inter",
-  display: "swap",
-});
-
-const caveat = Caveat({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-caveat",
-  display: "swap",
-});
-
 export const metadata: Metadata = {
   title: "Chocka — Get More Jobs From Google",
   description:
@@ -60,7 +39,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body
-        className={`${barlow.variable} ${dmSans.variable} ${dmMono.variable} ${archivoBlack.variable} ${inter.variable} ${caveat.variable} font-body antialiased bg-warm text-black`}
+        className={`${barlow.variable} ${dmSans.variable} ${dmMono.variable} font-body antialiased bg-warm text-black`}
       >
         {children}
       </body>
