@@ -43,42 +43,28 @@ function HomeNav() {
 
 function RotatingNiche() {
   const [index, setIndex] = useState(0);
-  const [phase, setPhase] = useState<'word' | 'cursor'>('word');
+  const [visible, setVisible] = useState(true);
 
   useEffect(() => {
-    const WORD_MS = 2200;
-    const CURSOR_MS = 800;
-    let timer: ReturnType<typeof setTimeout>;
-    const cycle = () => {
-      setPhase('cursor');
-      timer = setTimeout(() => {
+    const id = setInterval(() => {
+      setVisible(false);
+      setTimeout(() => {
         setIndex((i) => (i + 1) % NICHE_WORDS.length);
-        setPhase('word');
-        timer = setTimeout(cycle, WORD_MS);
-      }, CURSOR_MS);
-    };
-    timer = setTimeout(cycle, WORD_MS);
-    return () => clearTimeout(timer);
+        setVisible(true);
+      }, 350);
+    }, 2600);
+    return () => clearInterval(id);
   }, []);
 
   return (
     <span
-      className="relative block leading-[0.9]"
-      style={{ fontSize: 'clamp(3.5rem, 10vw, 7rem)', minHeight: '1em' }}
+      className="block font-heading font-extrabold text-orange leading-[0.9] transition-opacity duration-[350ms]"
+      style={{
+        fontSize: 'clamp(3.5rem, 10vw, 7rem)',
+        opacity: visible ? 1 : 0,
+      }}
     >
-      <span
-        className="block font-heading font-extrabold text-orange transition-opacity duration-[350ms]"
-        style={{ opacity: phase === 'word' ? 1 : 0 }}
-      >
-        {NICHE_WORDS[index]}
-      </span>
-      <span
-        className="absolute inset-0 flex items-center justify-center font-heading font-extrabold text-orange transition-opacity duration-[350ms] pointer-events-none"
-        style={{ opacity: phase === 'cursor' ? 1 : 0 }}
-        aria-hidden="true"
-      >
-        <span className="animate-cursor-blink">|</span>
-      </span>
+      {NICHE_WORDS[index]}
     </span>
   );
 }

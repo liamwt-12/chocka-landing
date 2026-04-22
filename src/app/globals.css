@@ -110,15 +110,6 @@
   animation: pulse-dot 2s ease-in-out infinite;
 }
 
-@keyframes cursor-blink {
-  0%, 50% { opacity: 1; }
-  51%, 100% { opacity: 0; }
-}
-
-.animate-cursor-blink {
-  animation: cursor-blink 0.4s step-end infinite;
-}
-
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
