@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Barlow_Condensed, DM_Sans, DM_Mono, Archivo_Black, Inter, Caveat } from "next/font/google";
+import { Barlow_Condensed, DM_Sans, DM_Mono, Caveat } from "next/font/google";
 import "./globals.css";
 
 const barlow = Barlow_Condensed({
@@ -20,20 +20,6 @@ const dmMono = DM_Mono({
   subsets: ["latin"],
   weight: ["400", "500"],
   variable: "--font-dm-mono",
-  display: "swap",
-});
-
-const archivoBlack = Archivo_Black({
-  subsets: ["latin"],
-  weight: ["400"],
-  variable: "--font-archivo-black",
-  display: "swap",
-});
-
-const inter = Inter({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-inter",
   display: "swap",
 });
 
@@ -60,7 +46,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body
-        className={`${barlow.variable} ${dmSans.variable} ${dmMono.variable} ${archivoBlack.variable} ${inter.variable} ${caveat.variable} font-body antialiased bg-warm text-black`}
+        className={`${barlow.variable} ${dmSans.variable} ${dmMono.variable} ${caveat.variable} font-body antialiased bg-warm text-black`}
       >
         {children}
       </body>

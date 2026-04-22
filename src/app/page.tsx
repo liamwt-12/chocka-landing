@@ -26,13 +26,13 @@ function HomeNav() {
     >
       <div className="max-w-[960px] mx-auto flex items-center justify-between px-6 md:px-8 py-4">
         <Link href="/" className="flex items-center">
-          <span className="font-display text-2xl text-rust tracking-tight">
+          <span className="font-heading font-extrabold text-2xl text-orange tracking-tight">
             CHOCKA
           </span>
         </Link>
         <a
           href={APP_LOGIN}
-          className="bg-rust text-white font-inter font-semibold text-sm px-5 py-2.5 rounded-full hover:bg-[#a2301c] transition-colors"
+          className="bg-orange text-white font-body font-semibold text-sm px-5 py-2.5 rounded-full hover:bg-orange-dark transition-colors"
         >
           See what we&rsquo;d fix &mdash; free →
         </a>
@@ -58,7 +58,7 @@ function RotatingNiche() {
 
   return (
     <span
-      className="block font-display text-rust leading-[0.9] transition-opacity duration-[350ms]"
+      className="block font-heading font-extrabold text-orange leading-[0.9] transition-opacity duration-[350ms]"
       style={{
         fontSize: 'clamp(3.5rem, 10vw, 7rem)',
         opacity: visible ? 1 : 0,
@@ -73,37 +73,37 @@ function ProblemSection() {
   return (
     <section className="pt-[140px] md:pt-[170px] pb-20 md:pb-28 px-6 md:px-8">
       <div className="max-w-[960px] mx-auto text-center">
-        <div className="inline-block border border-rust text-rust font-inter font-semibold text-xs uppercase tracking-wider px-4 py-1.5 rounded-full mb-10">
+        <div className="inline-block border border-orange text-orange font-body font-semibold text-xs uppercase tracking-wider px-4 py-1.5 rounded-full mb-10">
           Your Google profile is costing you customers
         </div>
 
         <h1 className="mb-10">
-          <span className="block font-display text-ink leading-[0.95]" style={{ fontSize: 'clamp(2rem, 5vw, 3rem)' }}>
+          <span className="block font-heading font-extrabold text-ink leading-[0.95]" style={{ fontSize: 'clamp(2rem, 5vw, 3rem)' }}>
             YOUR
           </span>
           <RotatingNiche />
-          <span className="block font-display text-ink leading-[0.95]" style={{ fontSize: 'clamp(2rem, 5vw, 3rem)' }}>
+          <span className="block font-heading font-extrabold text-ink leading-[0.95]" style={{ fontSize: 'clamp(2rem, 5vw, 3rem)' }}>
             DESERVES BETTER.
           </span>
         </h1>
 
-        <p className="font-inter text-ink-2 text-lg md:text-xl leading-relaxed max-w-2xl mx-auto mb-10">
+        <p className="font-body text-ink-2 text-lg md:text-xl leading-relaxed max-w-2xl mx-auto mb-10">
           Right now, customers are searching Google for a business like yours.
           Most profiles are incomplete, stale, and losing to competitors who put
           in the work. Yours might be one of them.
         </p>
 
         <div className="flex flex-wrap justify-center gap-x-10 gap-y-4">
-          <div className="font-inter text-ink-3 text-sm">
-            <span className="font-display text-rust text-2xl mr-2">73%</span>
+          <div className="font-body text-ink-3 text-sm">
+            <span className="font-heading font-extrabold text-orange text-2xl mr-2">73%</span>
             no recent posts
           </div>
-          <div className="font-inter text-ink-3 text-sm">
-            <span className="font-display text-rust text-2xl mr-2">58%</span>
+          <div className="font-body text-ink-3 text-sm">
+            <span className="font-heading font-extrabold text-orange text-2xl mr-2">58%</span>
             never reply to reviews
           </div>
-          <div className="font-inter text-ink-3 text-sm">
-            <span className="font-display text-rust text-2xl mr-2">41%</span>
+          <div className="font-body text-ink-3 text-sm">
+            <span className="font-heading font-extrabold text-orange text-2xl mr-2">41%</span>
             have incomplete information
           </div>
         </div>
@@ -158,7 +158,7 @@ function ScoreRing() {
         />
       </svg>
       <div className="absolute inset-0 flex items-center justify-center">
-        <span className="font-display text-ink text-4xl">{score}</span>
+        <span className="font-heading font-extrabold text-ink text-4xl">{score}</span>
       </div>
     </div>
   );
@@ -166,9 +166,9 @@ function ScoreRing() {
 
 function ScoreTransition() {
   return (
-    <section className="py-20 md:py-28 px-6 md:px-8 border-t border-paper-line">
+    <section className="py-14 md:py-20 px-6 md:px-8 border-t border-paper-line">
       <div className="max-w-[960px] mx-auto text-center flex flex-col items-center">
-        <div className="font-inter font-semibold text-xs uppercase tracking-wider text-ink-3 mb-8">
+        <div className="font-body font-semibold text-xs uppercase tracking-wider text-ink-3 mb-8">
           Find out in 60 seconds
         </div>
 
@@ -176,7 +176,7 @@ function ScoreTransition() {
           <ScoreRing />
         </div>
 
-        <h2 className="font-display text-ink mb-8 leading-[0.95]" style={{ fontSize: 'clamp(2rem, 5vw, 3rem)' }}>
+        <h2 className="font-heading font-extrabold text-ink mb-8 leading-[0.95]" style={{ fontSize: 'clamp(2rem, 5vw, 3rem)' }}>
           WHAT WOULD YOUR
           <br />
           BUSINESS SCORE?
@@ -184,11 +184,11 @@ function ScoreTransition() {
 
         <a
           href={APP_LOGIN}
-          className="inline-flex items-center gap-2 bg-ink text-white font-inter font-semibold text-base md:text-lg px-8 py-4 rounded-full hover:bg-black transition-colors mb-4"
+          className="inline-flex items-center gap-2 bg-ink text-white font-body font-semibold text-base md:text-lg px-8 py-4 rounded-full hover:bg-black transition-colors mb-4"
         >
           See your score &mdash; free →
         </a>
-        <p className="font-inter text-ink-3 text-sm">
+        <p className="font-body text-ink-3 text-sm">
           Free · No card · 60 seconds
         </p>
       </div>
@@ -220,14 +220,9 @@ function SolutionSection() {
     <section className="py-20 md:py-28 px-6 md:px-8 border-t border-paper-line">
       <div className="max-w-[960px] mx-auto">
         <div className="text-center mb-12">
-          <div className="font-inter font-semibold text-xs uppercase tracking-wider text-rust mb-6">
+          <div className="font-body font-semibold text-xs uppercase tracking-wider text-orange">
             Then we fix everything
           </div>
-          <h2 className="font-display text-ink leading-[0.95]" style={{ fontSize: 'clamp(2rem, 5vw, 3rem)' }}>
-            THE FULL PROFILE,
-            <br />
-            RUN FOR YOU.
-          </h2>
         </div>
 
         <div className="grid sm:grid-cols-2 gap-4 max-w-3xl mx-auto">
@@ -236,8 +231,8 @@ function SolutionSection() {
               key={f.title}
               className="bg-paper-card border border-paper-line rounded-2xl p-6"
             >
-              <div className="font-display text-ink text-xl mb-2">{f.title}</div>
-              <p className="font-inter text-ink-2 text-sm leading-relaxed">
+              <div className="font-heading font-extrabold text-ink text-xl mb-2">{f.title}</div>
+              <p className="font-body text-ink-2 text-sm leading-relaxed">
                 {f.body}
               </p>
             </div>
@@ -254,51 +249,51 @@ function SMSMockup() {
       <div className="max-w-sm mx-auto">
         <div className="bg-ink rounded-3xl p-1 shadow-2xl">
           <div className="flex items-center justify-between px-6 py-3">
-            <span className="text-white/40 text-xs font-inter">09:00</span>
+            <span className="text-white/40 text-xs font-body">09:00</span>
             <div className="flex items-center gap-2">
-              <div className="w-5 h-5 rounded-full bg-rust flex items-center justify-center">
-                <span className="font-display text-white text-[10px]">C</span>
+              <div className="w-5 h-5 rounded-full bg-orange flex items-center justify-center">
+                <span className="font-heading font-extrabold text-white text-[10px]">C</span>
               </div>
-              <span className="font-display text-white text-sm">Chocka</span>
+              <span className="font-heading font-extrabold text-white text-sm">Chocka</span>
             </div>
-            <span className="text-white/40 text-xs font-inter">Mon</span>
+            <span className="text-white/40 text-xs font-body">Mon</span>
           </div>
 
           <div className="px-4 pb-6">
             <div className="bg-white/10 rounded-2xl rounded-tl-md p-5 text-sm text-white/80 leading-relaxed">
-              <p className="mb-3 font-inter">
+              <p className="mb-3 font-body">
                 📊 <span className="font-bold text-white">Your weekly stats</span>
               </p>
-              <div className="space-y-1 font-inter text-xs">
+              <div className="space-y-1 font-body text-xs">
                 <p>
                   Profile views:{' '}
-                  <span className="text-white font-bold">612</span>{' '}
-                  <span className="text-[#22c55e]">↑ 18%</span>
+                  <span className="text-white font-bold">847</span>{' '}
+                  <span className="text-[#22c55e]">↑ 12%</span>
                 </p>
                 <p>
-                  Calls: <span className="text-white font-bold">11</span>{' '}
-                  <span className="text-[#22c55e]">↑ 4</span>
+                  Calls: <span className="text-white font-bold">8</span>{' '}
+                  <span className="text-[#22c55e]">↑ 3</span>
                 </p>
                 <p>
                   Local ranking:{' '}
-                  <span className="text-white font-bold">#3</span>{' '}
-                  <span className="text-[#22c55e]">↑ 2</span>
+                  <span className="text-white font-bold">#2</span>{' '}
+                  <span className="text-[#22c55e]">↑ 1</span>
                 </p>
                 <p>
                   Star rating:{' '}
-                  <span className="text-white font-bold">4.9★</span>
+                  <span className="text-white font-bold">4.7★</span>
                 </p>
               </div>
               <div className="mt-3 pt-3 border-t border-white/10">
-                <p className="text-white/60 text-xs font-inter">
+                <p className="text-white/60 text-xs font-body">
                   2 reviews replied to this week ✓
                 </p>
-                <p className="text-white/60 text-xs font-inter">
+                <p className="text-white/60 text-xs font-body">
                   Post going live on Friday 🚀
                 </p>
               </div>
             </div>
-            <div className="text-white/20 text-xs mt-2 ml-2 font-inter">
+            <div className="text-white/20 text-xs mt-2 ml-2 font-body">
               Monday 09:00
             </div>
           </div>
@@ -336,7 +331,7 @@ function IndustryRouting() {
     <section className="py-20 md:py-28 px-6 md:px-8 border-t border-paper-line">
       <div className="max-w-[960px] mx-auto">
         <div className="text-center mb-12">
-          <div className="font-inter font-semibold text-xs uppercase tracking-wider text-rust mb-6">
+          <div className="font-body font-semibold text-xs uppercase tracking-wider text-orange mb-6">
             See how it works for your industry
           </div>
         </div>
@@ -346,15 +341,15 @@ function IndustryRouting() {
             <Link
               key={it.href}
               href={it.href}
-              className="bg-paper-card border border-paper-line rounded-2xl p-6 hover:border-rust transition-colors group flex items-center justify-between"
+              className="bg-paper-card border border-paper-line rounded-2xl p-6 hover:border-orange transition-colors group flex items-center justify-between"
             >
               <div>
-                <div className="font-display text-ink text-xl mb-1">
+                <div className="font-heading font-extrabold text-ink text-xl mb-1">
                   {it.title}
                 </div>
-                <p className="font-inter text-ink-3 text-sm">{it.sub}</p>
+                <p className="font-body text-ink-3 text-sm">{it.sub}</p>
               </div>
-              <span className="font-display text-ink-3 group-hover:text-rust transition-colors text-xl">
+              <span className="font-heading font-extrabold text-ink-3 group-hover:text-orange transition-colors text-xl">
                 →
               </span>
             </Link>
@@ -381,10 +376,10 @@ function Pricing() {
       <div className="max-w-md mx-auto">
         <div className="bg-paper-card border border-paper-line rounded-3xl p-10">
           <div className="text-center mb-8">
-            <div className="font-display text-rust text-7xl md:text-8xl leading-none">
+            <div className="font-heading font-extrabold text-orange text-7xl md:text-8xl leading-none">
               £29
             </div>
-            <div className="font-inter text-ink-3 text-sm mt-2">
+            <div className="font-body text-ink-3 text-sm mt-2">
               per month · cancel anytime
             </div>
           </div>
@@ -393,26 +388,26 @@ function Pricing() {
             {features.map((f) => (
               <li key={f} className="flex items-start gap-3">
                 <span className="text-[#22c55e] mt-0.5 shrink-0 font-bold">✓</span>
-                <span className="font-inter text-ink-2 text-sm">{f}</span>
+                <span className="font-body text-ink-2 text-sm">{f}</span>
               </li>
             ))}
           </ul>
 
           <div className="inline-flex w-full justify-center bg-paper border border-paper-line rounded-full px-4 py-2 mb-8">
-            <span className="font-inter text-ink-3 text-sm">Annual: </span>
-            <span className="font-display text-ink text-sm ml-1">£229/year</span>
-            <span className="font-inter text-[#22c55e] text-sm font-semibold ml-2">
+            <span className="font-body text-ink-3 text-sm">Annual: </span>
+            <span className="font-heading font-extrabold text-ink text-sm ml-1">£229/year</span>
+            <span className="font-body text-[#22c55e] text-sm font-semibold ml-2">
               save £119
             </span>
           </div>
 
           <a
             href={APP_LOGIN}
-            className="flex items-center justify-center gap-2 bg-rust text-white font-inter font-semibold text-lg px-6 py-4 rounded-full hover:bg-[#a2301c] transition-colors"
+            className="flex items-center justify-center gap-2 bg-orange text-white font-body font-semibold text-lg px-6 py-4 rounded-full hover:bg-orange-dark transition-colors"
           >
             See what we&rsquo;d fix &mdash; free →
           </a>
-          <p className="font-inter text-ink-3 text-xs text-center mt-4">
+          <p className="font-body text-ink-3 text-xs text-center mt-4">
             Set up in 2 minutes · Cancel anytime · No contract
           </p>
         </div>
@@ -425,18 +420,18 @@ function FinalCTA() {
   return (
     <section className="py-20 md:py-28 px-6 md:px-8 border-t border-paper-line">
       <div className="max-w-[960px] mx-auto text-center">
-        <h2 className="font-display text-ink mb-10 leading-[0.95] max-w-3xl mx-auto" style={{ fontSize: 'clamp(2rem, 5.5vw, 3.5rem)' }}>
+        <h2 className="font-heading font-extrabold text-ink mb-10 leading-[0.95] max-w-3xl mx-auto" style={{ fontSize: 'clamp(2rem, 5.5vw, 3.5rem)' }}>
           TWO MINUTES TO CONNECT.
           <br />
           THEN WE HANDLE IT.
         </h2>
         <a
           href={APP_LOGIN}
-          className="inline-flex items-center gap-2 bg-ink text-white font-inter font-semibold text-base md:text-lg px-8 py-4 rounded-full hover:bg-black transition-colors"
+          className="inline-flex items-center gap-2 bg-ink text-white font-body font-semibold text-base md:text-lg px-8 py-4 rounded-full hover:bg-black transition-colors"
         >
           See what we&rsquo;d fix &mdash; free →
         </a>
-        <p className="font-inter text-ink-3 text-sm mt-4">
+        <p className="font-body text-ink-3 text-sm mt-4">
           £29/month · Cancel anytime
         </p>
       </div>
@@ -448,8 +443,8 @@ function HomeFooter() {
   return (
     <footer className="py-16 px-6 md:px-8 border-t border-paper-line">
       <div className="max-w-[960px] mx-auto text-center">
-        <div className="font-signature text-rust text-4xl mb-3">Liam</div>
-        <p className="font-inter text-ink-2 text-sm mb-4">
+        <div className="font-signature text-orange text-4xl mb-3">Liam</div>
+        <p className="font-body text-ink-2 text-sm mb-4">
           Built in the North East ·{' '}
           <a
             href="mailto:team@chocka.co.uk"
@@ -458,7 +453,7 @@ function HomeFooter() {
             team@chocka.co.uk
           </a>
         </p>
-        <div className="flex justify-center gap-6 text-sm font-inter text-ink-3">
+        <div className="flex justify-center gap-6 text-sm font-body text-ink-3">
           <Link href="/privacy" className="hover:text-ink transition-colors">
             Privacy
           </Link>
