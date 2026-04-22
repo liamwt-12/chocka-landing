@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 
 const NICHE_WORDS = ['SALON', 'RESTAURANT', 'TRADE', 'DENTAL PRACTICE', 'GYM', 'CLINIC'];
@@ -43,41 +43,55 @@ function HomeNav() {
 
 function RotatingNiche() {
   const [index, setIndex] = useState(0);
-  const [visible, setVisible] = useState(true);
+  const [phase, setPhase] = useState<'word' | 'cursor'>('word');
 
   useEffect(() => {
-    const id = setInterval(() => {
-      setVisible(false);
-      setTimeout(() => {
+    const WORD_MS = 2200;
+    const CURSOR_MS = 800;
+    let timer: ReturnType<typeof setTimeout>;
+    const cycle = () => {
+      setPhase('cursor');
+      timer = setTimeout(() => {
         setIndex((i) => (i + 1) % NICHE_WORDS.length);
-        setVisible(true);
-      }, 350);
-    }, 2600);
-    return () => clearInterval(id);
+        setPhase('word');
+        timer = setTimeout(cycle, WORD_MS);
+      }, CURSOR_MS);
+    };
+    timer = setTimeout(cycle, WORD_MS);
+    return () => clearTimeout(timer);
   }, []);
 
   return (
     <span
-      className="block font-heading font-extrabold text-orange leading-[0.9] transition-opacity duration-[350ms]"
-      style={{
-        fontSize: 'clamp(3.5rem, 10vw, 7rem)',
-        opacity: visible ? 1 : 0,
-      }}
+      className="relative block leading-[0.9]"
+      style={{ fontSize: 'clamp(3.5rem, 10vw, 7rem)', minHeight: '1em' }}
     >
-      {NICHE_WORDS[index]}
+      <span
+        className="block font-heading font-extrabold text-orange transition-opacity duration-[350ms]"
+        style={{ opacity: phase === 'word' ? 1 : 0 }}
+      >
+        {NICHE_WORDS[index]}
+      </span>
+      <span
+        className="absolute inset-0 flex items-center justify-center font-heading font-extrabold text-orange transition-opacity duration-[350ms] pointer-events-none"
+        style={{ opacity: phase === 'cursor' ? 1 : 0 }}
+        aria-hidden="true"
+      >
+        <span className="animate-cursor-blink">|</span>
+      </span>
     </span>
   );
 }
 
 function ProblemSection() {
   return (
-    <section className="pt-[140px] md:pt-[170px] pb-20 md:pb-28 px-6 md:px-8">
+    <section className="pt-[120px] md:pt-[140px] pb-10 md:pb-14 px-6 md:px-8">
       <div className="max-w-[960px] mx-auto text-center">
-        <div className="inline-block border border-orange text-orange font-body font-semibold text-xs uppercase tracking-wider px-4 py-1.5 rounded-full mb-10">
+        <div className="inline-block border border-orange text-orange font-body font-semibold text-xs uppercase tracking-wider px-4 py-1.5 rounded-full mb-8">
           Your Google profile is costing you customers
         </div>
 
-        <h1 className="mb-10">
+        <h1 className="mb-8">
           <span className="block font-heading font-extrabold text-ink leading-[0.95]" style={{ fontSize: 'clamp(2rem, 5vw, 3rem)' }}>
             YOUR
           </span>
@@ -87,7 +101,7 @@ function ProblemSection() {
           </span>
         </h1>
 
-        <p className="font-body text-ink-2 text-lg md:text-xl leading-relaxed max-w-2xl mx-auto mb-10">
+        <p className="font-body text-ink-2 text-lg md:text-xl leading-relaxed max-w-2xl mx-auto mb-8">
           Right now, customers are searching Google for a business like yours.
           Most profiles are incomplete, stale, and losing to competitors who put
           in the work. Yours might be one of them.
@@ -114,27 +128,50 @@ function ProblemSection() {
 
 function ScoreRing() {
   const [score, setScore] = useState(0);
+  const [triggered, setTriggered] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
   const target = 84;
   const radius = 56;
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (score / 100) * circumference;
 
   useEffect(() => {
+    const node = ref.current;
+    if (!node) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            setTriggered(true);
+            observer.disconnect();
+            break;
+          }
+        }
+      },
+      { threshold: 0.3 },
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!triggered) return;
     const duration = 1800;
     let start: number;
+    let raf = 0;
     const tick = (ts: number) => {
       if (!start) start = ts;
       const t = Math.min((ts - start) / duration, 1);
       const eased = 1 - Math.pow(1 - t, 3);
       setScore(Math.round(target * eased));
-      if (t < 1) requestAnimationFrame(tick);
+      if (t < 1) raf = requestAnimationFrame(tick);
     };
-    const raf = requestAnimationFrame(tick);
+    raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, []);
+  }, [triggered]);
 
   return (
-    <div className="relative" style={{ width: 128, height: 128 }}>
+    <div ref={ref} className="relative" style={{ width: 128, height: 128 }}>
       <svg width="128" height="128" viewBox="0 0 128 128" className="-rotate-90">
         <circle
           cx="64"
@@ -166,17 +203,17 @@ function ScoreRing() {
 
 function ScoreTransition() {
   return (
-    <section className="py-14 md:py-20 px-6 md:px-8 border-t border-paper-line">
+    <section className="py-8 md:py-12 px-6 md:px-8">
       <div className="max-w-[960px] mx-auto text-center flex flex-col items-center">
-        <div className="font-body font-semibold text-xs uppercase tracking-wider text-ink-3 mb-8">
+        <div className="font-body font-semibold text-xs uppercase tracking-wider text-ink-3 mb-6">
           Find out in 60 seconds
         </div>
 
-        <div className="mb-10">
+        <div className="mb-6">
           <ScoreRing />
         </div>
 
-        <h2 className="font-heading font-extrabold text-ink mb-8 leading-[0.95]" style={{ fontSize: 'clamp(2rem, 5vw, 3rem)' }}>
+        <h2 className="font-heading font-extrabold text-ink mb-6 leading-[0.95]" style={{ fontSize: 'clamp(2rem, 5vw, 3rem)' }}>
           WHAT WOULD YOUR
           <br />
           BUSINESS SCORE?
@@ -184,7 +221,7 @@ function ScoreTransition() {
 
         <a
           href={APP_LOGIN}
-          className="inline-flex items-center gap-2 bg-ink text-white font-body font-semibold text-base md:text-lg px-8 py-4 rounded-full hover:bg-black transition-colors mb-4"
+          className="inline-flex items-center gap-2 bg-ink text-white font-body font-semibold text-base md:text-lg px-8 py-4 rounded-full hover:bg-black transition-colors mb-3"
         >
           See your score &mdash; free →
         </a>
@@ -217,9 +254,9 @@ function SolutionSection() {
   ];
 
   return (
-    <section className="py-20 md:py-28 px-6 md:px-8 border-t border-paper-line">
+    <section className="py-12 md:py-16 px-6 md:px-8">
       <div className="max-w-[960px] mx-auto">
-        <div className="text-center mb-12">
+        <div className="text-center mb-8">
           <div className="font-body font-semibold text-xs uppercase tracking-wider text-orange">
             Then we fix everything
           </div>
@@ -245,7 +282,7 @@ function SolutionSection() {
 
 function SMSMockup() {
   return (
-    <section className="py-20 md:py-28 px-6 md:px-8">
+    <section className="py-12 md:py-16 px-6 md:px-8">
       <div className="max-w-sm mx-auto">
         <div className="bg-ink rounded-3xl p-1 shadow-2xl">
           <div className="flex items-center justify-between px-6 py-3">
@@ -328,20 +365,24 @@ function IndustryRouting() {
   ];
 
   return (
-    <section className="py-20 md:py-28 px-6 md:px-8 border-t border-paper-line">
+    <section className="py-12 md:py-16">
       <div className="max-w-[960px] mx-auto">
-        <div className="text-center mb-12">
-          <div className="font-body font-semibold text-xs uppercase tracking-wider text-orange mb-6">
+        <div className="text-center mb-8 px-6 md:px-8">
+          <div className="font-body font-semibold text-xs uppercase tracking-wider text-orange">
             See how it works for your industry
           </div>
         </div>
 
-        <div className="grid sm:grid-cols-2 gap-4 max-w-3xl mx-auto">
+        <div
+          className="flex gap-4 overflow-x-auto scrollbar-hide px-6 md:px-8 pb-2"
+          style={{ scrollSnapType: 'x mandatory' }}
+        >
           {industries.map((it) => (
             <Link
               key={it.href}
               href={it.href}
-              className="bg-paper-card border border-paper-line rounded-2xl p-6 hover:border-orange transition-colors group flex items-center justify-between"
+              className="bg-paper-card border border-paper-line rounded-2xl p-6 transition-colors hover:border-orange group flex items-center justify-between shrink-0"
+              style={{ width: 280, scrollSnapAlign: 'start' }}
             >
               <div>
                 <div className="font-heading font-extrabold text-ink text-xl mb-1">
@@ -349,11 +390,12 @@ function IndustryRouting() {
                 </div>
                 <p className="font-body text-ink-3 text-sm">{it.sub}</p>
               </div>
-              <span className="font-heading font-extrabold text-ink-3 group-hover:text-orange transition-colors text-xl">
+              <span className="font-heading font-extrabold text-ink-3 group-hover:text-orange transition-colors text-xl ml-4">
                 →
               </span>
             </Link>
           ))}
+          <div className="shrink-0 w-2" aria-hidden="true" />
         </div>
       </div>
     </section>
@@ -372,7 +414,7 @@ function Pricing() {
   ];
 
   return (
-    <section id="pricing" className="py-20 md:py-28 px-6 md:px-8 border-t border-paper-line">
+    <section id="pricing" className="py-12 md:py-16 px-6 md:px-8">
       <div className="max-w-md mx-auto">
         <div className="bg-paper-card border border-paper-line rounded-3xl p-10">
           <div className="text-center mb-8">
@@ -393,14 +435,6 @@ function Pricing() {
             ))}
           </ul>
 
-          <div className="inline-flex w-full justify-center bg-paper border border-paper-line rounded-full px-4 py-2 mb-8">
-            <span className="font-body text-ink-3 text-sm">Annual: </span>
-            <span className="font-heading font-extrabold text-ink text-sm ml-1">£229/year</span>
-            <span className="font-body text-[#22c55e] text-sm font-semibold ml-2">
-              save £119
-            </span>
-          </div>
-
           <a
             href={APP_LOGIN}
             className="flex items-center justify-center gap-2 bg-orange text-white font-body font-semibold text-lg px-6 py-4 rounded-full hover:bg-orange-dark transition-colors"
@@ -418,9 +452,9 @@ function Pricing() {
 
 function FinalCTA() {
   return (
-    <section className="py-20 md:py-28 px-6 md:px-8 border-t border-paper-line">
+    <section className="py-14 md:py-18 px-6 md:px-8">
       <div className="max-w-[960px] mx-auto text-center">
-        <h2 className="font-heading font-extrabold text-ink mb-10 leading-[0.95] max-w-3xl mx-auto" style={{ fontSize: 'clamp(2rem, 5.5vw, 3.5rem)' }}>
+        <h2 className="font-heading font-extrabold text-ink mb-8 leading-[0.95] max-w-3xl mx-auto" style={{ fontSize: 'clamp(2rem, 5.5vw, 3.5rem)' }}>
           TWO MINUTES TO CONNECT.
           <br />
           THEN WE HANDLE IT.
@@ -441,7 +475,7 @@ function FinalCTA() {
 
 function HomeFooter() {
   return (
-    <footer className="py-16 px-6 md:px-8 border-t border-paper-line">
+    <footer className="py-12 px-6 md:px-8">
       <div className="max-w-[960px] mx-auto text-center">
         <div className="font-signature text-orange text-4xl mb-3">Liam</div>
         <p className="font-body text-ink-2 text-sm mb-4">
