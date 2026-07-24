@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import WaitingList from '../shared/WaitingList';
 
 function useCountUp(
   start: number,
@@ -72,12 +73,13 @@ export default function TradesHero() {
             seconds. We&apos;ll show you exactly what&apos;s holding you back
             &mdash; then fix it.
           </p>
-          <a
-            href="https://app.chocka.co.uk/login"
-            className="btn-primary text-xl mb-3 inline-flex"
-          >
-            See what we&apos;d fix &mdash; free →
-          </a>
+          <p className="text-white/50 text-sm mb-3 max-w-md">
+            Chocka is closed to new signups. Join the waiting list and we&apos;ll
+            let you know when we reopen.
+          </p>
+          <div className="max-w-md">
+            <WaitingList dark source="For Tradespeople" />
+          </div>
         </div>
 
         {/* Right column — Score animation card */}

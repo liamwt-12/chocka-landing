@@ -13,7 +13,7 @@ import TradesFinalCTA from '@/components/tradespeople/TradesFinalCTA';
 export const metadata: Metadata = {
   title: 'Chocka for Tradespeople — Get More Jobs From Google',
   description:
-    'We fix your Google Business Profile then run it on autopilot. Weekly posts, review replies, Monday stats by text. £29/month. Connect in 30 seconds.',
+    'We fix your Google Business Profile then run it on autopilot. Weekly posts, review replies, Monday stats by text. Chocka is currently closed to new signups.',
 };
 
 export default function ForTradespeople() {

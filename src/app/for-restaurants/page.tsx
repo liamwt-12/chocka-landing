@@ -13,7 +13,7 @@ import TradesFinalCTA from '@/components/tradespeople/TradesFinalCTA';
 export const metadata: Metadata = {
   title: 'Chocka for Restaurants — Get More Covers From Google',
   description:
-    'We fix your Google Business Profile then run it on autopilot. Weekly posts, review replies, Monday stats by text. \u00A329/month. Connect in 30 seconds.',
+    'We fix your Google Business Profile then run it on autopilot. Weekly posts, review replies, Monday stats by text. Chocka is currently closed to new signups.',
 };
 
 export default function ForRestaurants() {
@@ -57,7 +57,7 @@ export default function ForRestaurants() {
         starRating="4.6★"
       />
       <SocialProof />
-      <NichePricing firstFeature="Weekly Google posts about your restaurant" />
+      <NichePricing />
       <TradesFinalCTA />
     </div>
   );

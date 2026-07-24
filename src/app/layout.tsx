@@ -31,9 +31,9 @@ const caveat = Caveat({
 });
 
 export const metadata: Metadata = {
-  title: "Chocka — Get More Jobs From Google",
+  title: "Chocka — Closed to new signups",
   description:
-    "Chocka manages your Google Business Profile so you get more calls, more jobs, and more revenue. £29/month. 2 minute setup.",
+    "Chocka is currently closed to new signups. Leave your email and we'll let you know if that changes.",
   metadataBase: new URL("https://chocka.co.uk"),
   icons: { icon: '/favicon.svg' },
 };

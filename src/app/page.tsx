@@ -1,62 +1,9 @@
-'use client';
-
-import { useState } from 'react';
 import Link from 'next/link';
+import WaitingList from '@/components/shared/WaitingList';
 
 // Chocka is closed to new signups while the team focuses elsewhere. This replaces
 // the former marketing landing with a single dignified screen plus a waiting-list
-// capture. Emails go to the existing /api/newsletter/subscribe endpoint (the
-// newsletter_subscribers table), tagged with town 'Waiting list'.
-function WaitingList() {
-  const [email, setEmail] = useState('');
-  const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      await fetch('/api/newsletter/subscribe', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, town: 'Waiting list' }),
-      });
-      setSubmitted(true);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  if (submitted) {
-    return (
-      <p className="font-body text-ink-2 text-base">
-        Thank you. We&rsquo;ll be in touch if a place opens up.
-      </p>
-    );
-  }
-
-  return (
-    <form onSubmit={handleSubmit} className="flex gap-3 w-full">
-      <input
-        type="email"
-        required
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="your@email.com"
-        aria-label="Email address"
-        className="flex-1 px-4 py-3 rounded-xl border border-paper-line bg-white text-black font-body focus:outline-none focus:ring-2 focus:ring-orange"
-      />
-      <button
-        type="submit"
-        disabled={loading}
-        className="bg-ink text-white font-body font-semibold px-6 py-3 rounded-xl hover:bg-black transition-colors disabled:opacity-60"
-      >
-        {loading ? '…' : 'Notify me'}
-      </button>
-    </form>
-  );
-}
-
+// capture (the shared WaitingList component, backed by newsletter_subscribers).
 export default function Home() {
   return (
     <main className="bg-paper min-h-screen flex flex-col items-center justify-center px-6 py-16 text-center">
@@ -79,7 +26,7 @@ export default function Home() {
       </p>
 
       <div className="w-full max-w-md">
-        <WaitingList />
+        <WaitingList source="Waiting list" />
       </div>
 
       <footer className="mt-16">

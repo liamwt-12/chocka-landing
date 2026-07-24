@@ -36,12 +36,12 @@ export default function TradesNav() {
           >
             ← Back to Index
           </Link>
-          <a
-            href="https://app.chocka.co.uk/login"
+          <Link
+            href="/"
             className="btn-primary text-sm py-2.5 px-5"
           >
-            See what we&apos;d fix &mdash; free →
-          </a>
+            Join the waiting list →
+          </Link>
         </div>
       </div>
     </nav>
